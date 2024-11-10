@@ -6,9 +6,12 @@
     SCL -> GP3 (On Board pin 5)
 
 # ds1302 rtc connect with sio mode
-   IO     -> GP16 (On Board pin 21)
-   SCLK   -> GP17 (On Board pin 22)
-   CE/RST -> GP18 (On Board pin 24)
+
+    IO     -> GP16 (On Board pin 21)
+
+    SCLK   -> GP17 (On Board pin 22)
+
+    CE/RST -> GP18 (On Board pin 24)
    
 
 
