@@ -1,0 +1,25 @@
+[package]
+name = "ds1302-drv"
+version = "0.3.0"
+edition = "2021"
+keywords = ["ds1302", "RTC",  "no_std", "RP2040", "RP2350"]
+description = " This Rust library provides an interface for interacting with ds1302 RTC using the rp2040-hal or rp235x-hal."
+repository = "https://github.com/sndnvaps/ds1302-drv"
+authors = ["Samuel Freeman <admin@sndnvaps.com>"]
+documentation = "https://docs.rs/ds1302-drv"
+license = "MIT/Apache-2.0"
+categories = ["hardware-support", "no-std", "embedded"]
+
+[dependencies]
+embedded-hal = "1.0.0"
+fugit = "0.3.7"
+nb = "1.1.0"
+critical-section = "1.1"
+defmt = { version = "0.3.8"}
+rp235x-hal = { version = "0.2.0", features = ["binary-info", "critical-section-impl", "rt", "defmt"],optional = true}
+rp2040-hal = {version = "0.10.2", features = ["critical-section-impl", "rt", "defmt"], optional = true}
+
+[features]
+default = ["rp2350"]
+rp2040 = ["dep:rp2040-hal"]
+rp2350 = ["dep:rp235x-hal"]
