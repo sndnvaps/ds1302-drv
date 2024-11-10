@@ -1,5 +1,5 @@
 [package]
-name = "pico2-rtc-display"
+name = "pico-rtc-display"
 version = "0.1.0"
 edition = "2021"
 license = "MIT OR Apache-2.0"
@@ -17,10 +17,10 @@ ssd1306 = "0.8.1"
 u8g2-fonts = { version = "0.4.0", features = ["embedded_graphics_textstyle"] }
 
 cfg-if = "1.0"
-ds1302-drv = {version = "0.3.0"， default-features = false, features = ["rp2350"]}
+ds1302-drv = {version = "0.4.0", default-features = false, features = ["rp2040"]}
 fugit = "0.3.7"
 nb = "1.1.0"
-rp235x-hal = { version = "0.2.0", features = ["binary-info", "critical-section-impl", "rt", "defmt"]}
+rp2040-hal = {version = "0.10.2", features = ["critical-section-impl", "rt", "defmt"]}
 panic-halt = "0.2.0"
 heapless = "0.6.0"
 
@@ -34,12 +34,3 @@ opt-level = "z"
 overflow-checks = false
 strip = true
 
-[features]
-# if you want make dht11/dht22 as default feature, just change the comment line
-# default = ["dht11"]
-default = ["dht22"]
-dht11 = []
-dht22 = []
-
-#[patch.crates-io]
-#embassy-dht = { git="https://github.com/sndnvaps/embassy-dht", rev="cf613fedc267ff45d8a580b512ff93af86a1bb10"}

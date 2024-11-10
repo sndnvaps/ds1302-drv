@@ -50,6 +50,10 @@ use rp2040_hal as hal;
 use hal::gpio::{
     FunctionSio, FunctionSioOutput, Pin, PinId, PullDown, SioInput, SioOutput, ValidFunction,
 };
+#[cfg(feature = "rp2350")]
+use hal::timer::TimerDevice;
+
+use hal::Timer;
 
 /// CmdFlag definitions
 pub enum CmdFlag {
@@ -101,6 +105,66 @@ pub trait Delay<const TIMER_HZ: u32> {
     /// Must return `OK(())` as soon as countdown `duration` has expired.
     fn wait(&mut self) -> nb::Result<(), Self::Error>;
 }
+
+#[cfg(feature = "rp2040")]
+pub struct DSClock<const TIMER_HZ: u32> {
+    _timer: Timer,
+}
+
+#[cfg(feature = "rp2040")]
+impl<const TIMER_HZ: u32> DSClock< TIMER_HZ> {
+    pub fn new(timer: Timer) -> Self {
+        Self { _timer: timer }
+    }
+}
+
+#[cfg(feature = "rp2040")]
+impl<const TIMER_HZ: u32> Delay<TIMER_HZ> for DSClock< TIMER_HZ> {
+    type Error = core::convert::Infallible;
+
+    fn now(&mut self) -> fugit::TimerInstantU32<TIMER_HZ> {
+        fugit::TimerInstantU32::from_ticks(0)
+    }
+
+    fn start(&mut self, _duration: fugit::TimerDurationU32<TIMER_HZ>) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn wait(&mut self) -> nb::Result<(), Self::Error> {
+        Ok(())
+    }
+}
+
+
+#[cfg(feature = "rp2350")]
+pub struct DSClock<TIM: TimerDevice, const TIMER_HZ: u32> {
+    _timer: Timer<TIM>,
+}
+
+#[cfg(feature = "rp2350")]
+impl<TIM: TimerDevice, const TIMER_HZ: u32> DSClock<TIM, TIMER_HZ> {
+    pub fn new(timer: Timer<TIM>) -> Self {
+        Self { _timer: timer }
+    }
+}
+
+#[cfg(feature = "rp2350")]
+impl<TIM: TimerDevice, const TIMER_HZ: u32> Delay<TIMER_HZ> for DSClock<TIM, TIMER_HZ> {
+    type Error = core::convert::Infallible;
+
+    fn now(&mut self) -> fugit::TimerInstantU32<TIMER_HZ> {
+        fugit::TimerInstantU32::from_ticks(0)
+    }
+
+    fn start(&mut self, _duration: fugit::TimerDurationU32<TIMER_HZ>) -> Result<(), Self::Error> {
+        Ok(())
+    }
+
+    fn wait(&mut self) -> nb::Result<(), Self::Error> {
+        Ok(())
+    }
+}
+
 
 ///Hour format: 12-hour (AM/PM) or 24-hour
 #[derive(PartialEq, Copy, Clone)]
@@ -202,13 +266,8 @@ pub(crate) fn decimal_to_bcd(decimal: u8) -> u8 {
     ((decimal / 10) << 4) + (decimal % 10)
 }
 
-///SCLK,CE都为 OutPutPin设置
-/// DAT为 数据输出端口需要设置为 PushPullOutput
-/// 参考链接: https://github.com/task-jp/ch32v003j4m6-ds1302/blob/main/src/main.rs
-
 ///Input. CE signal must be asserted high during a read or a write
 ///Note: Previous data sheet revisions referred to CE as RST
-
 pub struct DS1302<I1, I2, I3, D, const TIMER_HZ: u32>
 where
     I1: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
