@@ -20,6 +20,6 @@ rp235x-hal = { version = "0.2.0", features = ["binary-info", "critical-section-i
 rp2040-hal = {version = "0.10.2", features = ["critical-section-impl", "rt", "defmt"], optional = true}
 
 [features]
-default = ["rp2040"]
+default = ["rp2350"]
 rp2040 = ["dep:rp2040-hal"]
 rp2350 = ["dep:rp235x-hal"]
