@@ -33,8 +33,7 @@ use u8g2_fonts::U8g2TextStyle;
 use ssd1306::{prelude::*, Ssd1306};
 
 /// For ds1302 RTC
-pub mod ds1302;
-use ds1302_drv::{Calendar, Clock, Hours, Mode, DS1302};
+use ds1302_drv::{Calendar, Clock, DSClock, Hours, Mode, DS1302};
 
 #[link_section = ".start_block"]
 #[used]
@@ -108,7 +107,7 @@ fn main() -> ! {
 
     let mut timer = hal::Timer::new_timer0(pac.TIMER0, &mut pac.RESETS, &clocks);
 
-    let timer_ds1302: ds1302::MyClock<_, 100> = ds1302::MyClock::new(timer);
+    let timer_ds1302: DSClock<_, 100> = DSClock::new(timer);
     // Configure GPIO25 as an output
     let mut led_pin = pins.gpio25.into_push_pull_output();
 
@@ -121,13 +120,11 @@ fn main() -> ! {
     )
     .unwrap();
 
-
-
     let mut data = String::<U32>::from(" ");
 
     let _ = ds1302_ctl.set_running(true);
 
-    /// If first run need to init the clock && calendar
+    // If first run need to init the clock && calendar
     /*
     let h = Hours::Hour24(9);
     let clk = Clock {
@@ -145,9 +142,8 @@ fn main() -> ! {
     let _ = ds1302_ctl.set_clock_calendar(clk, cal);
     */
 
-
     //let _ = ds1302_ctl.set_clock_mode(Mode::Hour12);
-   // let _ = ds1302_ctl.set_clock_mode(Mode::Hour24);
+    // let _ = ds1302_ctl.set_clock_mode(Mode::Hour24);
 
     loop {
         data.clear();

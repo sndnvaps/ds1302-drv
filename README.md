@@ -27,8 +27,8 @@ DS1302 RTC Board
 
 ## Crate features
 
-* `rp2040` - use to enabled raspberry pico support (default features)
-* `rp2350` - use to enabled raspberry pico2 support 
+* `rp2040` - use to enabled raspberry pico support
+* `rp2350` - use to enabled raspberry pico2 support (default features)
 
 ## Examples
 https://github.com/sndnvaps/ds1302-drv/tree/main/examples/pico2-display-rtc

@@ -112,14 +112,14 @@ pub struct DSClock<const TIMER_HZ: u32> {
 }
 
 #[cfg(feature = "rp2040")]
-impl<const TIMER_HZ: u32> DSClock< TIMER_HZ> {
+impl<const TIMER_HZ: u32> DSClock<TIMER_HZ> {
     pub fn new(timer: Timer) -> Self {
         Self { _timer: timer }
     }
 }
 
 #[cfg(feature = "rp2040")]
-impl<const TIMER_HZ: u32> Delay<TIMER_HZ> for DSClock< TIMER_HZ> {
+impl<const TIMER_HZ: u32> Delay<TIMER_HZ> for DSClock<TIMER_HZ> {
     type Error = core::convert::Infallible;
 
     fn now(&mut self) -> fugit::TimerInstantU32<TIMER_HZ> {
@@ -134,7 +134,6 @@ impl<const TIMER_HZ: u32> Delay<TIMER_HZ> for DSClock< TIMER_HZ> {
         Ok(())
     }
 }
-
 
 #[cfg(feature = "rp2350")]
 pub struct DSClock<TIM: TimerDevice, const TIMER_HZ: u32> {
@@ -164,7 +163,6 @@ impl<TIM: TimerDevice, const TIMER_HZ: u32> Delay<TIMER_HZ> for DSClock<TIM, TIM
         Ok(())
     }
 }
-
 
 ///Hour format: 12-hour (AM/PM) or 24-hour
 #[derive(PartialEq, Copy, Clone)]
@@ -271,8 +269,8 @@ pub(crate) fn decimal_to_bcd(decimal: u8) -> u8 {
 pub struct DS1302<I1, I2, I3, D, const TIMER_HZ: u32>
 where
     I1: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
-    I2: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
-    I3: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
+    I2: PinId + ValidFunction<FunctionSio<SioOutput>>,
+    I3: PinId + ValidFunction<FunctionSio<SioOutput>>,
 {
     pub io: Option<Pin<I1, FunctionSioOutput, PullDown>>,
     pub ce: Pin<I2, FunctionSioOutput, PullDown>,
@@ -283,8 +281,8 @@ where
 impl<I1, I2, I3, D, const TIMER_HZ: u32> DS1302<I1, I2, I3, D, TIMER_HZ>
 where
     I1: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
-    I2: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
-    I3: PinId + ValidFunction<FunctionSio<SioInput>> + ValidFunction<FunctionSio<SioOutput>>,
+    I2: PinId + ValidFunction<FunctionSio<SioOutput>>,
+    I3: PinId + ValidFunction<FunctionSio<SioOutput>>,
     D: Delay<TIMER_HZ>,
 {
     pub fn new(

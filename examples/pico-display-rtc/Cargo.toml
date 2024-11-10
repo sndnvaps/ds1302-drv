@@ -17,7 +17,7 @@ ssd1306 = "0.8.1"
 u8g2-fonts = { version = "0.4.0", features = ["embedded_graphics_textstyle"] }
 
 cfg-if = "1.0"
-ds1302-drv = {version = "0.4.0", default-features = false, features = ["rp2040"]}
+ds1302-drv = {version = "0.4.1", default-features = false, features = ["rp2040"]}
 fugit = "0.3.7"
 nb = "1.1.0"
 rp2040-hal = {version = "0.10.2", features = ["critical-section-impl", "rt", "defmt"]}

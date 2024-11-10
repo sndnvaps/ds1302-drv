@@ -1,6 +1,6 @@
 [package]
 name = "ds1302-drv"
-version = "0.4.0"
+version = "0.4.1"
 edition = "2021"
 keywords = ["ds1302", "RTC",  "no_std", "RP2040", "RP2350"]
 description = " This Rust library provides an interface for interacting with ds1302 RTC using the rp2040-hal or rp235x-hal."
