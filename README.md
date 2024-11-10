@@ -19,7 +19,7 @@ months with fewer than 31 days, including corrections for leap year. The clock o
 Datasheet: [DS1302](https://www.analog.com/media/en/technical-documentation/data-sheets/ds1302.pdf)
 
 
-<img src="./images/ds1302-rtc-board.jpg" width="250" height="200" alt="ds1302-rtc-board">
+<img src="./images/ds1302-rtc-board.png" alt="ds1302-rtc-board">
                         
 DS1302 RTC Board
  

@@ -9,6 +9,10 @@ authors = ["Samuel Freeman <admin@sndnvaps.com>"]
 documentation = "https://docs.rs/ds1302-drv"
 license = "MIT/Apache-2.0"
 categories = ["hardware-support", "no-std", "embedded"]
+exclude = [
+    "/images",
+    "DS1302.pdf",
+]
 
 [dependencies]
 embedded-hal = "1.0.0"
