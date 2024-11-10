@@ -365,6 +365,46 @@ where
         Ok(())
     }
 
+    /// write_protect(true: bool) -> Enable Write_Protect
+    /// write_protect(false: bool) -> Disable Write_Protect
+    pub fn write_protect(&mut self, enable: bool) -> Result<(), Ds1302Error> {
+        //Firstly Check WRITE_PROTECT_BIT
+        let wp_read = self.read_reg(RegisterRead::WP.addr())?;
+        // wp_state == 0 -> disable_write_protect
+        // wp_state != 0 (== 0x80) -> enable_write_protect
+        let wp_state = wp_read & CmdFlag::WRITE_PROTECT.addr();
+
+        if enable {
+            if wp_state == 0 {
+                self.sclk.set_low().map_err(|_| Ds1302Error::ClockError)?;
+                self.ce
+                    .set_high()
+                    .map_err(|_| Ds1302Error::ChipSelectError)?;
+                self.delay.start(4.micros()).ok(); // tCC = 4us for 2V
+                self.write_byte(RegisterWrite::WP.addr())?;
+                self.write_byte(CmdFlag::WRITE_PROTECT.addr())?; // Enable Write_Protect
+                self.delay.start(300.nanos()).ok(); //tCCH = 240ns for 2V
+                self.ce.set_low().ok();
+                self.delay.start(4.micros()).ok();
+            }
+        } else {
+            if wp_state != 0 {
+                self.sclk.set_low().map_err(|_| Ds1302Error::ClockError)?;
+                self.ce
+                    .set_high()
+                    .map_err(|_| Ds1302Error::ChipSelectError)?;
+                self.delay.start(4.micros()).ok(); // tCC = 4us for 2V
+                self.write_byte(RegisterWrite::WP.addr())?;
+                self.write_byte(CmdFlag::DISABLE_WRITE_PROTECT.addr())?; // Disable Write_Protect
+                self.delay.start(300.nanos()).ok(); //tCCH = 240ns for 2V
+                self.ce.set_low().ok();
+                self.delay.start(4.micros()).ok();
+            }
+        }
+
+        Ok(())
+    }
+
     ///Return current information about seconds
     pub fn get_seconds(&mut self) -> Result<u8, Ds1302Error> {
         self.read_reg(RegisterRead::SECONDS.addr())
