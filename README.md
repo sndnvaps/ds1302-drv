@@ -4,9 +4,6 @@
 [![docs.rs badge](https://docs.rs/ds1302-drv/badge.svg)](https://docs.rs/ds1302-drv)
 
 
- DS1302 real time clock-calendar platform agnostic driver
-
-
 DS1302 real time clock-calendar platform agnostic driver
  
    This Rust library provides an interface for interacting with ds1302 RTC using the rp2040-hal or rp235x-hal.
