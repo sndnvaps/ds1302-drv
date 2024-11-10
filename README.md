@@ -32,6 +32,7 @@ DS1302 RTC Board
 
 ## Examples
 https://github.com/sndnvaps/ds1302-drv/tree/main/examples/pico2-display-rtc
+https://github.com/sndnvaps/ds1302-drv/tree/main/examples/pico-display-rtc
 
 ## License
 
